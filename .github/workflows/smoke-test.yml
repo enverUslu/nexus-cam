@@ -1,0 +1,26 @@
+name: Smoke test
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Compile source
+        run: python -m py_compile nexus_cam.py samsung_wifi_client.py samsung_wifi_web.py
+
+      - name: Check CLI help
+        run: python samsung_wifi_client.py --help

@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.Python
+.venv/
+.venv-build/
+venv/
+env/
+
+# Build output
+build/
+dist/
+*.dmg
+*.exe
+*.msi
+*.zip
+
+# Local OS/editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Local camera data and test output
+backups/
+downloads/
+downloads-*/
+downloads_allshare/
+downloads-allshare/
+cameraDump/
+media.db
+*.part
+
+# Local reference checkout
+samsung-camera-downloader-upstream/
