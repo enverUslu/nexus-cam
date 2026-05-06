@@ -11,7 +11,8 @@ import tkinter as tk
 from tkinter import messagebox
 import webbrowser
 
-from samsung_wifi_web import APP_NAME, APP_VERSION, AppHandler, HOST, PORT
+import qr_lite
+from samsung_wifi_web import APP_NAME, APP_VERSION, AppHandler, BIND_HOST, HOST, PORT, lan_url
 
 
 BG = "#080807"
@@ -371,6 +372,7 @@ class MyceliumCreditsBackground:
 class NexusCamApp:
     def __init__(self) -> None:
         self.url = f"http://{HOST}:{PORT}"
+        self.mobile_url = lan_url()
         self.server: ThreadingHTTPServer | None = None
         self.drag_start_x = 0
         self.drag_start_y = 0
@@ -386,7 +388,7 @@ class NexusCamApp:
             self.root.tk.call("::tk::unsupported::MacWindowStyle", "style", self.root._w, "plain", "none")
         except tk.TclError:
             pass
-        self.root.geometry("560x360")
+        self.root.geometry("690x390")
         self.root.configure(bg=BG)
         self.root.resizable(False, False)
         self.root.protocol("WM_DELETE_WINDOW", self.stop)
@@ -421,10 +423,41 @@ class NexusCamApp:
         self.title_canvas.bind("<ButtonPress-1>", self.start_drag)
         self.title_canvas.bind("<B1-Motion>", self.drag)
 
-        version = tk.Label(top, text=f"v{APP_VERSION}", bg=PANEL, fg=MUTED, font=(MONO_FONT, 12, "bold"))
-        version.pack(side="right")
+        mobile_panel = tk.Frame(top, bg=PANEL)
+        mobile_panel.pack(side="right", anchor="ne")
+        mobile_panel.bind("<ButtonPress-1>", self.start_drag)
+        mobile_panel.bind("<B1-Motion>", self.drag)
+
+        version = tk.Label(mobile_panel, text=f"v{APP_VERSION}", bg=PANEL, fg=MUTED, font=(MONO_FONT, 12, "bold"))
+        version.pack(anchor="e")
         version.bind("<ButtonPress-1>", self.start_drag)
         version.bind("<B1-Motion>", self.drag)
+
+        self.qr_canvas = tk.Canvas(
+            mobile_panel,
+            width=116,
+            height=116,
+            bg=PANEL,
+            highlightthickness=0,
+            bd=0,
+            cursor=HAND_CURSOR,
+        )
+        self.qr_canvas.pack(anchor="e", pady=(20, 8))
+        self.qr_canvas.bind("<Button-1>", lambda _event: webbrowser.open(self.mobile_url))
+        self.draw_qr(self.qr_canvas, self.mobile_url)
+
+        mobile_label = tk.Label(mobile_panel, text="PHONE", bg=PANEL, fg=INK, font=(MONO_FONT, 10, "bold"))
+        mobile_label.pack(anchor="e")
+        mobile_url_label = tk.Label(
+            mobile_panel,
+            text=self.mobile_url.replace("http://", ""),
+            bg=PANEL,
+            fg=MUTED,
+            font=(MONO_FONT, 8, "bold"),
+        )
+        mobile_url_label.pack(anchor="e")
+        mobile_note = tk.Label(mobile_panel, text="same Wi-Fi", bg=PANEL, fg=MUTED, font=(MONO_FONT, 8))
+        mobile_note.pack(anchor="e")
 
         buttons = tk.Frame(body, bg=PANEL)
         buttons.pack(side="bottom", fill="x", pady=(8, 0))
@@ -480,9 +513,26 @@ class NexusCamApp:
         canvas.create_oval(x + 20, y + 25, x + 42, y + 47, outline=INK, width=5)
         canvas.create_rectangle(x + 47, y + 25, x + 51, y + 29, fill=INK, outline=INK)
 
+    def draw_qr(self, canvas: tk.Canvas, value: str) -> None:
+        matrix = qr_lite.make_matrix(value)
+        quiet = 4
+        size = len(matrix) + quiet * 2
+        box = min(int(canvas["width"]) // size, int(canvas["height"]) // size)
+        total = box * size
+        offset_x = (int(canvas["width"]) - total) // 2
+        offset_y = (int(canvas["height"]) - total) // 2
+        canvas.create_rectangle(offset_x, offset_y, offset_x + total, offset_y + total, fill=INK, outline=INK)
+        for row, values in enumerate(matrix):
+            for col, dark in enumerate(values):
+                if not dark:
+                    continue
+                x = offset_x + (col + quiet) * box
+                y = offset_y + (row + quiet) * box
+                canvas.create_rectangle(x, y, x + box, y + box, fill=BG, outline=BG)
+
     def start_server(self) -> None:
         try:
-            self.server = ThreadingHTTPServer((HOST, PORT), AppHandler)
+            self.server = ThreadingHTTPServer((BIND_HOST, PORT), AppHandler)
         except OSError as error:
             self.server_ready = False
             messagebox.showerror(APP_NAME, f"Could not start {APP_NAME} on {self.url}\n\n{error}")

@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import json
 import os
+import socket
 import subprocess
 import sys
 import threading
@@ -30,6 +31,7 @@ import samsung_wifi_client as camera_client
 
 
 HOST = "127.0.0.1"
+BIND_HOST = "0.0.0.0"
 PORT = 8765
 APP_NAME = "Nexus.cam"
 APP_VERSION = "0.1.0"
@@ -39,6 +41,32 @@ DEFAULT_DEST = str(Path.home() / "Pictures" / "SamsungCamera")
 MEDIA_CACHE: dict[str, list[camera_client.MediaFile]] = {}
 JOBS: dict[str, dict[str, Any]] = {}
 LOCK = threading.Lock()
+
+
+def lan_host() -> str:
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        sock.connect(("8.8.8.8", 80))
+        ip = sock.getsockname()[0]
+        if not ip.startswith("127."):
+            return ip
+    except OSError:
+        pass
+    finally:
+        sock.close()
+
+    try:
+        for info in socket.getaddrinfo(socket.gethostname(), None, socket.AF_INET):
+            ip = info[4][0]
+            if not ip.startswith(("127.", "169.254.")):
+                return ip
+    except OSError:
+        pass
+    return HOST
+
+
+def lan_url() -> str:
+    return f"http://{lan_host()}:{PORT}"
 
 
 INDEX_HTML = r"""<!doctype html>
@@ -1353,11 +1381,12 @@ def open_browser_later(url: str) -> None:
 
 
 def main() -> int:
-    server = ThreadingHTTPServer((HOST, PORT), AppHandler)
+    server = ThreadingHTTPServer((BIND_HOST, PORT), AppHandler)
     url = f"http://{HOST}:{PORT}"
     if "--no-browser" not in sys.argv:
         threading.Thread(target=open_browser_later, args=(url,), daemon=True).start()
     print(f"Nexus.cam web app: {url}")
+    print(f"Phone/tablet URL: {lan_url()}")
     print("Close this window to stop Nexus.cam.")
     try:
         server.serve_forever()
