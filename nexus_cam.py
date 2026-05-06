@@ -24,6 +24,7 @@ BAD = "#8f2f2f"
 DISPLAY_FONT = "Impact"
 TEXT_FONT = "Helvetica Neue"
 MONO_FONT = "Menlo"
+HAND_CURSOR = "hand2"
 
 
 class FlatButton(tk.Label):
@@ -49,7 +50,7 @@ class FlatButton(tk.Label):
             pady=pady,
             highlightbackground=LINE,
             highlightthickness=2,
-            cursor="pointinghand",
+            cursor=HAND_CURSOR,
         )
         self.command = command
         self.normal = {"bg": bg, "fg": fg}
@@ -65,7 +66,7 @@ class FlatButton(tk.Label):
     def set_enabled(self, enabled: bool) -> None:
         self.enabled = enabled
         if enabled:
-            self.config(cursor="pointinghand")
+            self.config(cursor=HAND_CURSOR)
             self._paint(self.normal)
         else:
             self.config(cursor="arrow", bg=PANEL_DARK, fg="#555555")
@@ -553,7 +554,7 @@ class NexusCamApp:
         self.backed_canvas_text(canvas, 410, 282, "built by enverUslu", "#f7f3e8", (MONO_FONT, 11, "bold"))
         repo_id = self.backed_canvas_text(canvas, 410, 312, "github.com/enverUslu/nexus-cam", "#00e5ff", (MONO_FONT, 10, "bold"))
         canvas.tag_bind(repo_id, "<Button-1>", lambda _event: webbrowser.open("https://github.com/enverUslu/nexus-cam"))
-        canvas.tag_bind(repo_id, "<Enter>", lambda _event: canvas.config(cursor="pointinghand"))
+        canvas.tag_bind(repo_id, "<Enter>", lambda _event: canvas.config(cursor=HAND_CURSOR))
         canvas.tag_bind(repo_id, "<Leave>", lambda _event: canvas.config(cursor=""))
         self.backed_canvas_text(canvas, 410, 340, "MIT License", "#d8ff2f", (MONO_FONT, 10, "bold"))
         self.backed_canvas_text(canvas, 410, 368, "Issues & contributions welcome", "#f7f3e8", (MONO_FONT, 10, "bold"))
@@ -580,7 +581,7 @@ class NexusCamApp:
             )
             canvas.tag_lower(hitbox, close_id)
         canvas.tag_bind("credits-close", "<Button-1>", lambda _event: self.close_credits())
-        canvas.tag_bind("credits-close", "<Enter>", lambda _event: canvas.config(cursor="pointinghand"))
+        canvas.tag_bind("credits-close", "<Enter>", lambda _event: canvas.config(cursor=HAND_CURSOR))
         canvas.tag_bind("credits-close", "<Leave>", lambda _event: canvas.config(cursor=""))
         popup.transient(self.root)
         popup.update_idletasks()
