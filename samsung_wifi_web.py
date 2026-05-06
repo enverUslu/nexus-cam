@@ -293,6 +293,25 @@ INDEX_HTML = r"""<!doctype html>
     .theme-btn[data-theme="crt"] { background: #55ff88; }
     .theme-btn[data-theme="zine"] { background: #2848ff; color: #fff; }
     .theme-btn.active { outline: 3px solid var(--accent); outline-offset: 2px; }
+    .settings-link {
+      border: 2px solid var(--line-2);
+      background: var(--panel-2);
+      padding: 9px 10px;
+      color: var(--muted);
+      text-transform: none;
+      letter-spacing: 0;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .settings-link a {
+      color: var(--accent);
+      text-transform: uppercase;
+      text-decoration: none;
+      border-bottom: 2px solid currentColor;
+    }
+    .settings-link a:hover {
+      color: var(--accent-2);
+    }
     main {
       padding: 16px;
       display: grid;
@@ -679,6 +698,10 @@ INDEX_HTML = r"""<!doctype html>
             <button class="theme-btn" data-theme="crt" aria-label="Theme 5">5</button>
             <button class="theme-btn" data-theme="zine" aria-label="Theme 6">6</button>
           </div>
+        </div>
+        <div class="settings-link">
+          wanna contribute to this project?
+          <a href="https://github.com/enverUslu/nexus-cam" target="_blank" rel="noreferrer">join here</a>
         </div>
         <label>Download folder
           <input id="destInput" type="text">
