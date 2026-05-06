@@ -6,10 +6,10 @@ It runs on your computer, opens in a browser, discovers the camera on the local 
 
 ## Download
 
-Installers are published from the GitHub Releases page.
+Installers are published from the [GitHub Releases page](https://github.com/enverUslu/nexus-cam/releases/latest).
 
-- Windows: download `NexusCam-Setup-v0.1.0.exe`
-- macOS: download `NexusCam-v0.1.0-macOS.dmg`
+- Windows: download [`NexusCam-Setup-v0.1.0.exe`](https://github.com/enverUslu/nexus-cam/releases/latest/download/NexusCam-Setup-v0.1.0.exe)
+- macOS: download [`NexusCam-v0.1.0-macOS.dmg`](https://github.com/enverUslu/nexus-cam/releases/latest/download/NexusCam-v0.1.0-macOS.dmg)
 
 Unsigned macOS builds may require right-clicking the app and choosing `Open`, or allowing it in System Settings after the first launch attempt.
 
@@ -117,6 +117,12 @@ This still only performs HTTP downloads from the camera.
 ## Safety
 
 Nexus.cam is intentionally limited to media listing and download. Firmware modification and camera write operations are out of scope.
+
+## Contributing
+
+Want to help test another camera or improve the app? Open an issue, send a pull request, or email `njordblaviken@outlook.com`.
+
+Compatibility reports for other Samsung SMART Camera models are especially useful.
 
 ## Troubleshooting
 

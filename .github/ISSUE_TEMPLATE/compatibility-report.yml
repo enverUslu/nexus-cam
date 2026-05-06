@@ -12,7 +12,7 @@ body:
     id: camera_model
     attributes:
       label: Camera model
-      description: Example: Samsung WB200F, WB250F, NX300, DV150F
+      description: "Example: Samsung WB200F, WB250F, NX300, DV150F"
       placeholder: Samsung WB200F
     validations:
       required: true
@@ -30,7 +30,7 @@ body:
     id: camera_mode
     attributes:
       label: Camera Wi-Fi mode
-      description: Example: AllShare Play, Samsung Link, MobileLink
+      description: "Example: AllShare Play, Samsung Link, MobileLink"
       placeholder: AllShare Play
     validations:
       required: true
