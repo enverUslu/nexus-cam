@@ -1,0 +1,52 @@
+name: Camera compatibility report
+description: Report whether Nexus.cam works with a Samsung Wi-Fi camera model.
+title: "[Compatibility] "
+labels:
+  - compatibility
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for testing Nexus.cam. Reports from other Samsung SMART Camera models help clarify compatibility.
+  - type: input
+    id: camera_model
+    attributes:
+      label: Camera model
+      description: Example: Samsung WB200F, WB250F, NX300, DV150F
+      placeholder: Samsung WB200F
+    validations:
+      required: true
+  - type: dropdown
+    id: result
+    attributes:
+      label: Result
+      options:
+        - Works
+        - Partially works
+        - Does not work
+    validations:
+      required: true
+  - type: input
+    id: camera_mode
+    attributes:
+      label: Camera Wi-Fi mode
+      description: Example: AllShare Play, Samsung Link, MobileLink
+      placeholder: AllShare Play
+    validations:
+      required: true
+  - type: input
+    id: computer
+    attributes:
+      label: Computer platform
+      description: Include operating system and version if known.
+      placeholder: Windows 11 / macOS 15
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: Include what worked, what failed, and any camera prompts you saw.
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: Paste non-private logs or screenshots. Do not upload private photos, camera dumps, firmware files, or personal media.
