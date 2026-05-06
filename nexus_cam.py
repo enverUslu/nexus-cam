@@ -262,8 +262,6 @@ class MyceliumCreditsBackground:
             for distance, b in sorted(candidates, key=lambda item: item[0])[:4]:
                 ax, ay = float(a["x"]), float(a["y"])
                 bx, by = float(b["x"]), float(b["y"])
-                mx = (ax + bx) / 2
-                my = (ay + by) / 2
                 pointer = self.distance_to_segment(float(self.pointer["x"]), float(self.pointer["y"]), ax, ay, bx, by)
                 hot = bool(self.pointer["active"]) and pointer < self.pointer_radius
                 fill = "#d8ff2f" if hot else "#9d9484"
