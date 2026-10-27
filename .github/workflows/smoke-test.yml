@@ -24,3 +24,6 @@ jobs:
 
       - name: Check CLI help
         run: python samsung_wifi_client.py --help
+
+      - name: Test camera resolution
+        run: python -m unittest discover -s tests -v
