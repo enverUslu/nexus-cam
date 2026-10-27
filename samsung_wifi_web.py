@@ -1165,6 +1165,13 @@ def find_cameras() -> list[camera_client.Camera]:
 
 
 def resolve_camera(ip: str) -> camera_client.Camera:
+    for device in camera_client.discover(timeout=4):
+        if device.ip != ip:
+            continue
+        camera = camera_client.camera_from_description(device)
+        if camera:
+            return camera
+
     camera = camera_client.camera_from_ip(ip)
     if not camera:
         raise RuntimeError(f"No Samsung camera service found at {ip}")
